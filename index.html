@@ -71,9 +71,9 @@
         let iframe = document.createElement('iframe');
         iframe.onload = function () { 
             alert('myframe is loaded')
-            iframe.contentWindow.postMessage("runModel({onSuccess: function(results){console.log(results)}})", "https://guerrato.github.io/flight_fuel")
+            iframe.contentWindow.postMessage("runModel({onSuccess: function(results){console.log(results)}})", "*")
         }; // before setting 'src'
-        iframe.src = 'https://insightmaker.com/insight/201542/Flight-Fuel-simulation';
+        iframe.src = '//InsightMaker.com/insight/201542/embed?topBar=1&sideBar=1&zoom=1';
         iframe.width='100%'
         iframe.height='500'
         iframe.crossorigin="anonymous"
