@@ -71,7 +71,7 @@
         let iframe = document.createElement('iframe');
         iframe.onload = function () { 
             alert('myframe is loaded')
-            iframe.contentWindow.postMessage("runModel({onSuccess: function(results){console.log(results)}})", "*")
+            iframe.contentWindow.postMessage("runModel({onSuccess: function(results){console.log(results)}})", "https://insightmaker.com")
         }; // before setting 'src'
         iframe.src = 'https://insightmaker.com/insight/201542/Flight-Fuel-simulation';
         iframe.width='100%'
