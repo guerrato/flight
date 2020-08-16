@@ -253,3 +253,16 @@ let aircrafts = [
         "fuel_per_seat_mpg": 76
     }
 ]
+
+const initSelector = selectEl => {
+    const select = document.getElementById(selectEl)
+    aircrafts.forEach(air => {
+        const opt = document.createElement('option')
+        opt.value = air.id
+        opt.text = air.model
+
+        select.appendChild(opt)
+    })
+
+    return select
+}
