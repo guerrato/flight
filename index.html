@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid" id="test">
         <div class="row ">
             <div class="col-12">
                 <h1 class="title">Simulate the aircraft fuel necessity </h1>
@@ -45,7 +45,8 @@
                 </div>
             </div>
         </div>
-        <iframe src="https://insightmaker.com/insight/201542/Flight-Fuel-simulation" id="insight" frameborder="0" width="100%" height="500"></iframe>
+        <!-- <iframe src="" id="insight" frameborder="0"
+            width="100%" height="500" sandbox="allow-forms allow-scripts allow-popups allow-same-origin"></iframe> -->
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -66,8 +67,21 @@
     <script>
         const airSelect = initSelector('aircraft')
         const seatsRange = document.getElementById('occupied_seats')
-        const insight = document.getElementById('insight').contentWindow.postMessage("showMessage('O roso e roso')", "*")
-        
+
+        let iframe = document.createElement('iframe');
+        iframe.onload = function () { 
+            alert('myframe is loaded')
+            iframe.contentWindow.postMessage("runModel({onSuccess: function(results){console.log(results)}})", "*")
+        }; // before setting 'src'
+        iframe.src = 'https://insightmaker.com/insight/201542/Flight-Fuel-simulation';
+        iframe.width='100%'
+        iframe.height='500'
+        // iframe.sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-downloads"
+        document.getElementById('test').appendChild(iframe)
+        // const insight = document.getElementById('insight').contentWindow
+        // console.log(insight)
+        // insight.postMessage("runModel({onSuccess: function(results){console.log(results)}})", "*")
+
         initMap('mapdiv')
 
         airSelect.addEventListener('change', evt => {
