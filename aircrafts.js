@@ -1,4 +1,4 @@
-let aircrafts = [
+const aircrafts = [
     {
         "id": 1,
         "model": "Airbus A330-200",
@@ -265,4 +265,8 @@ const initSelector = selectEl => {
     })
 
     return select
+}
+
+const getAircraft = id => {
+    return aircrafts.find(a => a.id === parseInt(id))
 }

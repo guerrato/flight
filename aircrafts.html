@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row ">
             <div class="col-12">
-                <h1 class="title">Simulate the aircraft fuel capacity </h1>
+                <h1 class="title">Simulate the aircraft fuel necessity </h1>
             </div>
         </div>
         <div class="row">
@@ -23,12 +23,15 @@
                     <div class="form-row">
                         <div class="form-group col-12">
                             <label for="aircraft">Aircraft</label>
-                            <select id="aircraft" class="form-control"></select>
+                            <select id="aircraft" class="form-control">
+                                <option value="0">Select an aircraft</option>
+                            </select>
                         </div>
                         <div class="form-group col-12">
                             <label for="occupied_seats">Occupied Seats</label>
-                            <input type="range" class="custom-range" min="1" max="5" step="1" value="1"
+                            <input type="range" class="custom-range" min="1" max="1" step="1" value="1"
                                 id="occupied_seats">
+                            <small id="occupied_seats_block" class="form-text text-muted">Occupied seats: 1</small>
                         </div>
                     </div>
                 </form>
@@ -42,6 +45,7 @@
                 </div>
             </div>
         </div>
+        <iframe src="https://insightmaker.com/insight/201542/Flight-Fuel-simulation" id="insight" frameborder="0" width="100%" height="500"></iframe>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -61,11 +65,25 @@
     <script src="main.js"></script>
     <script>
         const airSelect = initSelector('aircraft')
+        const seatsRange = document.getElementById('occupied_seats')
+        const insight = document.getElementById('insight').contentWindow.postMessage("showMessage('O roso e roso')", "*")
+        
         initMap('mapdiv')
 
         airSelect.addEventListener('change', evt => {
-            console.log('roso')
+            const airc = getAircraft(evt.target.value)
+            if (airc === undefined) {
+                seatsRange.max = 1
+                return false
+            } else {
+                seatsRange.max = airc.seats
+            }
         })
+
+        seatsRange.addEventListener('pointermove', evt => {
+            document.getElementById('occupied_seats_block').textContent = `Occupied seats: ${evt.target.value}`
+        })
+
     </script>
 </body>
 
