@@ -46,7 +46,7 @@
             </div>
         </div>
         <iframe src="https://InsightMaker.com/insight/201542/embed?topBar=0&sideBar=0&zoom=1" id="insight"
-            frameborder="0" width="100%" height="500" sandbox="allow-same-origin allow-scripts allow-popups allow-modals"></iframe>
+            frameborder="0" width="100%" height="500" sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-modals"></iframe>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -72,7 +72,7 @@
         insight.onload = function () {
             alert('myframe is loaded')
             console.log(insight.contentWindow)
-            insight.contentWindow.postMessage('runModel({onSuccess: function(results){console.log(results)}})', '*')
+            insight.contentWindow.postMessage('runModel({onSuccess: function(results){console.log(results)}})', 'https://InsightMaker.com')
         }
 
         initMap('mapdiv')
