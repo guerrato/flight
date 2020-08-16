@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Fuel</title>
+    <style>
+        #chartdiv {
+            width: 100%;
+            height: 90vh;
+        }
+    </style>
+</head>
+
+<body>
+    <select name="aircrafts" id="aircrafts"></select>
+    <div id="chartdiv"></div>
+
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/maps.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/geodata/worldLow.js"></script>
+
+    <script src="aircrafts.js"></script>
+    <script>
+        let rad = function (x) {
+            return x * Math.PI / 180;
+        }
+
+        let getDistance = function (p1, p2) {
+            let R = 6378137; // Earth’s mean radius in meter
+            let dLat = rad(p2.latitude - p1.latitude)
+            let dLong = rad(p2.longitude - p1.longitude)
+            let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(rad(p1.latitude)) * Math.cos(rad(p2.latitude)) *
+                Math.sin(dLong / 2) * Math.sin(dLong / 2)
+            let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+            let d = R * c
+            return d // returns the distance in meter
+        }
+
+        const select = document.getElementById("aircrafts")
+        aircrafts.forEach(air => {
+            const opt = document.createElement("option")
+            opt.value = air.id
+            opt.text = air.model
+
+            select.appendChild(opt)
+        })
+
+        let chart = am4core.create("chartdiv", am4maps.MapChart)
+        chart.geodata = am4geodata_worldLow
+        chart.projection = new am4maps.projections.Miller()
+        let polygonSeries = chart.series.push(new am4maps.MapPolygonSeries())
+        let imageSeries = chart.series.push(new am4maps.MapImageSeries())
+        polygonSeries.useGeodata = true
+        polygonSeries.exclude = ["AQ"]
+        let polygonTemplate = polygonSeries.mapPolygons.template
+        let imageSeriesTemplate = imageSeries.mapImages.template
+        let circle = imageSeriesTemplate.createChild(am4core.Circle)
+        let lineSeries = chart.series.push(new am4maps.MapLineSeries())
+
+        circle.radius = 3
+        circle.nonScaling = true
+        imageSeriesTemplate.propertyFields.latitude = "latitude"
+        imageSeriesTemplate.propertyFields.longitude = "longitude"
+        imageSeriesTemplate.propertyFields.fill = "color"
+        let data = []
+
+        polygonTemplate.events.on("hit", function (ev) {
+            let coords = chart.svgPointToGeo(ev.svgPoint)
+            if (data.length === 2) {
+                data = []
+                lineSeries.data = []
+            }
+
+            data.push({
+                latitude: coords.latitude,
+                longitude: coords.longitude,
+                color: data.length === 0 ? '#1c2e4a' : '#ff0074'
+            })
+
+            if (data.length === 2) {
+                lineSeries.data = [{
+                    multiGeoLine: [data]
+                }]
+                console.log(getDistance(data[0], data[1]))
+            }
+
+            imageSeries.data = data
+        })
+    </script>
+</body>
+
+</html>
