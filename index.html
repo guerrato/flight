@@ -71,11 +71,12 @@
         let iframe = document.createElement('iframe');
         iframe.onload = function () { 
             alert('myframe is loaded')
-            iframe.contentWindow.postMessage("runModel({onSuccess: function(results){console.log(results)}})", "github.io")
+            iframe.contentWindow.postMessage("runModel({onSuccess: function(results){console.log(results)}})", "*")
         }; // before setting 'src'
         iframe.src = 'https://insightmaker.com/insight/201542/Flight-Fuel-simulation';
         iframe.width='100%'
         iframe.height='500'
+        iframe.crossorigin="anonymous"
         // iframe.sandbox="allow-forms allow-scripts allow-popups allow-same-origin allow-downloads"
         document.getElementById('test').appendChild(iframe)
         // const insight = document.getElementById('insight').contentWindow
