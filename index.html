@@ -72,7 +72,7 @@
         insight.onload = function () {
             alert('myframe is loaded')
             console.log(insight.contentWindow)
-            insight.contentWindow.postMessage('runModel({onSuccess: function(results){console.log(results)}})', 'https://guerrato.github.io')
+            insight.contentWindow.postMessage('runModel({onSuccess: function(results){console.log(results)}})', '*')
         }
 
         initMap('mapdiv')
